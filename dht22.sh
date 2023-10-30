@@ -14,15 +14,22 @@ sudo nice -20 python3 dht22.py > dht20.txt
 
 
 
+# Open the file for reading
 if [ -e "dht22.txt" ]; then
     # Read the first line of the file
     read -r line < "dht22.txt"
     
-    # Set the IFS (Internal Field Separator) to a tab character
+    # Store the current value of IFS
+    OLD_IFS=$IFS
+    
+    # Set the IFS (Internal Field Separator) to a tab character just for the `read` command
     IFS=$'\t'
     
     # Split the line into substrings and store them in variables
     read -a fields <<< "$line"
+    
+    # Restore the previous value of IFS
+    IFS=$OLD_IFS
     
     # Check if there are at least two fields
     if [ ${#fields[@]} -ge 2 ]; then
