@@ -12,37 +12,19 @@ sleep 5
 
 sudo nice -20 python3 dht22.py > dht20.txt
 
+file="dht22.txt"
 
+# Check if the file exists
+if [ -e "$file" ]; then
+    # Read the first line and store it in the TEMP variable
+    TEMP=$(head -n 1 "$file")
 
-# Open the file for reading
-if [ -e "dht22.txt" ]; then
-    # Read the first line of the file
-    read -r line < "dht22.txt"
-    
-    # Store the current value of IFS
-    OLD_IFS=$IFS
-    
-    # Set the IFS (Internal Field Separator) to a tab character just for the `read` command
-    IFS=$'\t'
-    
-    # Split the line into substrings and store them in variables
-    read -a fields <<< "$line"
-    
-    # Restore the previous value of IFS
-    IFS=$OLD_IFS
-    
-    # Check if there are at least two fields
-    if [ ${#fields[@]} -ge 2 ]; then
-        TEMP="${fields[0]}"
-        RH="${fields[1]}"
-        
-        echo $TEMP
-        echo $RH
-        
-        curl -s -i -H "Accept: application/json" "http://$SERVER/json.htm?type=command&c=getauth&param=udevice&idx=$DHTIDX&nvalue=0&svalue=$TEMP;$RH;2"
-    else
-        echo "The line does not contain at least two fields separated by tabs."
-    fi
+    # Read the second line and store it in the RH variable
+    RH=$(sed -n '2p' "$file")
+
+    # Display the values
+    echo "Temperature: $TEMP"
+    echo "Relative Humidity: $RH"
 else
-    echo "File dht22.txt does not exist."
+    echo "File not found: $file"
 fi
