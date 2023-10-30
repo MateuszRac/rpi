@@ -13,4 +13,4 @@ def c_to_f(input):
 def round_num(input):
    return '{:.2f}'.format(input)
 
-print(str(round_num(sensor.temperature))+"\n"+str(round_num(sensor.relative_humidity)))
+print(str(round_num(sensor.temperature))+"\t"+str(round_num(sensor.relative_humidity)))
