@@ -10,9 +10,9 @@ DHTPIN="4"
 
 sleep 5
 
-sudo nice -20 python3 dht22.py > dht20.txt
+sudo nice -20 python3 aht20.py > aht20.txt
 
-file="dht22.txt"
+file="aht20.txt"
 
 # Check if the file exists
 if [ -e "$file" ]; then
