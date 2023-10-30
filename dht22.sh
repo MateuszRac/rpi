@@ -28,6 +28,10 @@ if [ -e "dht22.txt" ]; then
     if [ ${#fields[@]} -ge 2 ]; then
         TEMP="${fields[0]}"
         RH="${fields[1]}"
+        
+        echo $TEMP
+        echo $RH
+        
         curl -s -i -H "Accept: application/json" "http://$SERVER/json.htm?type=command&c=getauth&param=udevice&idx=$DHTIDX&nvalue=0&svalue=$TEMP;$RH;2"
     else
         echo "The line does not contain at least two fields separated by tabs."
