@@ -3,7 +3,7 @@
 # Domoticz server
 SERVER="http://192.168.1.16:8080/"
 # DHT IDX
-DHTIDX="20"
+DHTIDX="12"
 
 # DHTPIN
 DHTPIN="4"
