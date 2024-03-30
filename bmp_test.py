@@ -1,20 +1,32 @@
-import time
+from bmp280 import BMP280
+import os
+import re
+from datetime import datetime
+import adafruit_ahtx0
 import board
-# import digitalio # For use with SPI
-import adafruit_bmp280
+import requests
+from dotenv import load_dotenv
+import statistics
+import time
+
+load_dotenv()
 
 
+try:
+    from smbus2 import SMBus
+except ImportError:
+    from smbus import SMBus
 
-# OR Create sensor object, communicating over the board's default SPI bus
-spi = board.SPI()
-bmp_cs = digitalio.DigitalInOut(board.D10)
-bmp280 = adafruit_bmp280.Adafruit_BMP280_SPI(spi, bmp_cs)
 
-# change this to match the location's pressure (hPa) at sea level
-bmp280.sea_level_pressure = 1013.25
+# Initialise the BMP280
+try:
+    bus = SMBus(1)
+    bmp280 = BMP280(i2c_dev=bus)
 
-while True:
-    print("\nTemperature: %0.1f C" % bmp280.temperature)
-    print("Pressure: %0.1f hPa" % bmp280.pressure)
-    print("Altitude = %0.2f meters" % bmp280.altitude)
-    time.sleep(2)
+    current_time = datetime.utcnow()
+    timestamp = current_time.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    print(bmp280.get_pressure())
+except:
+    print('BMP280 error')
+    
