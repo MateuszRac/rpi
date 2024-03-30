@@ -1,32 +1,23 @@
+#!/usr/bin/env python
+
 from bmp280 import BMP280
-import os
-import re
-from datetime import datetime
-import adafruit_ahtx0
-import board
-import requests
-from dotenv import load_dotenv
-import statistics
-import time
-
-load_dotenv()
-
 
 try:
     from smbus2 import SMBus
 except ImportError:
     from smbus import SMBus
 
+print("""dump-calibration.py - Dumps calibration data.
+
+Press Ctrl+C to exit!
+
+""")
 
 # Initialise the BMP280
-try:
-    bus = SMBus(1)
-    bmp280 = BMP280(i2c_dev=bus)
+bmp280 = BMP280(i2c_dev=SMBus(1))
+bmp280.setup()
 
-    current_time = datetime.utcnow()
-    timestamp = current_time.strftime("%Y-%m-%dT%H:%M:%SZ")
-
-    print(bmp280.get_pressure())
-except:
-    print('BMP280 error')
-    
+for key in dir(bmp280.calibration):
+    if key.startswith('dig_'):
+        value = getattr(bmp280.calibration, key)
+        print('{} = {}'.format(key, value))
